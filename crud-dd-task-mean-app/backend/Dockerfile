@@ -1,7 +1,6 @@
-
-FROM node:20-alpine
-
-# Create app directory
+# backend/Dockerfile
+# Build stage (optional if you use TypeScript/build step)
+FROM node:18-alpine AS build
 WORKDIR /app
 
 # Install dependencies

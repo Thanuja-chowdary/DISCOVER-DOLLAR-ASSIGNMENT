@@ -1,19 +1,17 @@
-# backend/Dockerfile
-# Build stage (optional if you use TypeScript/build step)
-FROM node:18-alpine AS build
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-COPY . .
-# If you have a build step (e.g. TypeScript): RUN npm run build
+FROM node:20-alpine
 
-# Runtime stage
-FROM node:18-alpine
+# Create app directory
 WORKDIR /app
-# only copy needed files (or copy from build)
-COPY --from=build /app /app
-ENV NODE_ENV=production
-# expose app port (ensure matches backend code)
+
+# Install dependencies
+COPY package*.json ./
+RUN npm install --production
+
+# Copy project files
+COPY . .
+
+# Expose backend port (default: 3000 or 8080 — adjust if needed)
 EXPOSE 3000
-# Use your app's actual start command
+
+# Start backend server
 CMD ["node", "server.js"]
